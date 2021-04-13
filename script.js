@@ -39,6 +39,7 @@ function drawText() {
   strokeWeight(1);
 
   text('press "space" to switch selection types', 200, 50);
+  text(selector.name, width - 250, height - 30);
 
   fill(255);
   strokeWeight(3);

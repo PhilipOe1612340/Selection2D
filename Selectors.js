@@ -1,6 +1,7 @@
 
 class Selector {
-    constructor(range) {
+    constructor(name, range) {
+        this.name = name;
         this.range = range;
         this.pos = { x: 0, y: 0 }
     }
@@ -31,7 +32,7 @@ class Selector {
 class BubbleSelector extends Selector {
 
     constructor() {
-        super(100);
+        super('Bubble Selector',100);
         this.cursor = new BubbleCursor(this.range);
     }
 
@@ -61,7 +62,7 @@ class BubbleSelector extends Selector {
 
 class RaySelector extends Selector {
     constructor() {
-        super(50);
+        super('Ray Selector', 50);
         this.pointerPos = 0.5;
         this.cursor = new RayCursor(50, this.pointerPos);
     }
@@ -112,7 +113,7 @@ class RaySelector extends Selector {
 class HidingSelector extends Selector {
 
     constructor() {
-        super(50);
+        super('Toggling Selector', 50);
         this.cursor = new HidingCursor(this.range);
         this.unSelectMode = false;
     }
@@ -130,9 +131,10 @@ class HidingSelector extends Selector {
             }
             return { d, shouldChange };
         })
-            .sort((d1, d2) => d2.d.zIndex - d1.d.zIndex)
             .filter(({ shouldChange }) => shouldChange)
-            .slice(0, 1).forEach(({ d }) => d.select(!d.isSelected))
+            .sort((d1, d2) => d2.d.zIndex - d1.d.zIndex)
+            .slice(0, 1)
+            .forEach(({ d }) => d.select(!d.isSelected));
 
 
         collection.forEach(d => {
