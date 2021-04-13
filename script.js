@@ -2,19 +2,18 @@ const drawable = [];
 let selectMode = false;
 let pos = { x: 0, y: 0 };
 
-const selectors = [new BubbleSelector(), new RaySelector()];
-let selectorNr = 0;
+const selectors = [new BubbleSelector(), new RaySelector(), new HidingSelector()];
+let selectorNr = 2;
 let selector = selectors[selectorNr];
 
 
 async function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
-  rectMode(CENTER);
   stroke(0);
 
   const ma = 200;
   for (let index = 0; index < 100; index++) {
-    drawable.push(new EllipseEl(drawable.length, { x: ~~random(ma, width - ma), y: ~~random(ma, height - ma) }, ~~random(40, 80)))
+    drawable.push(new EllipseEl(drawable.length / 100, { x: ~~random(ma, width - ma), y: ~~random(ma, height - ma) }, ~~random(40, 80)))
   }
   textSize(32);
 }
@@ -72,8 +71,7 @@ function keyTyped() {
   if (key === ' ') {
     selectorNr = (selectorNr + 1) % selectors.length;
     selector = selectors[selectorNr];
-    drawable.forEach(d => d.isPreselected = d.isSelected = false);
-
+    drawable.forEach(d => d.isHidden = d.isPreselected = d.isSelected = false);
   }
 
   return false;

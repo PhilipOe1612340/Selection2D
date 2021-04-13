@@ -37,7 +37,7 @@ class BubbleSelector extends Selector {
 
     select(collection, mode) {
         if (!mode) { return }
-        collection.forEach(d => d.select(this.shouldSelect(d)));
+        collection.forEach(d => d.select(d.isSelected || this.shouldSelect(d)));
     }
 
     shouldSelect(d) {
@@ -105,7 +105,45 @@ class RaySelector extends Selector {
     }
 
     modify(byN) {
-        this.pointerPos = Math.min(Math.max(this.pointerPos - byN / 1000, 0), 1);
+        this.pointerPos = Math.min(Math.max(this.pointerPos - byN / 3000, 0), 1);
         this.cursor.pointerPos = this.pointerPos;
+    }
+}
+class HidingSelector extends Selector {
+
+    constructor() {
+        super(50);
+        this.cursor = new HidingCursor(this.range);
+        this.unSelectMode = false;
+    }
+
+    select(collection, mode) {
+
+        collection.forEach(d => {
+            d.isHidden = false;
+            if (mode) {
+                if (this.unSelectMode && d.isSelected) {
+                    d.select(!this.shouldSelect(d));
+                }
+                if (!this.unSelectMode && !d.isSelected) {
+                    d.select(this.shouldSelect(d));
+                }
+            }
+
+            d.isHidden = d.isSelected !== this.unSelectMode;
+        });
+    }
+
+    shouldSelect(d) {
+        return this.inside(d.anchor.x, this.pos.x, this.range) && this.inside(d.anchor.y, this.pos.y, this.range)
+    }
+
+    inside(x, y, range) {
+        return Math.abs(x - y) < range;
+    }
+
+    modify(byN) {
+        this.unSelectMode = Math.sign(byN) === -1;
+        this.cursor.mode = this.unSelectMode ? 'unselect' : 'select';
     }
 }

@@ -59,12 +59,53 @@ class RayCursor extends Cursor {
         const x = 100;
         const y = 200;
 
-        rectMode(CORNERS);
         fill(220);
-        rect(0, 0, x, y);
+        this.setGradient(0, 0, x, y + 10, color(255), color(255 * 0.2))
 
-        fill(0);
+
+        fill('pink');
+        noStroke();
+        rectMode(CORNERS);
         rect(0, y * (1 - this.pointerPos), x, y * (1 - this.pointerPos) + 10);
-        rectMode(CENTER);
+        stroke(0);
     }
+
+
+    setGradient(x, y, w, h, c1, c2) {
+        noFill();
+
+        for (let i = y; i <= y + h; i++) {
+            let inter = map(i, y, y + h, 0, 1);
+            let c = lerpColor(c1, c2, inter);
+            stroke(c);
+            line(x, i, x + w, i);
+        }
+    }
+}
+
+
+class HidingCursor extends Cursor {
+    constructor(range) {
+        super();
+        this.width = range;
+        this.height = range;
+        this.mode = 'select';
+    }
+
+    drawEl() {
+        let col = color(255);
+        col.setAlpha(150);
+        fill(col);
+        stroke('green');
+        strokeWeight(5);
+        ellipse(this.anchor.x, this.anchor.y, this.width, this.height);
+        strokeWeight(3);
+        
+        
+        noStroke();
+        fill(0)
+        text(this.mode + ' bubbles', 10, height - 100);
+        stroke(0);
+    }
+
 }

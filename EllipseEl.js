@@ -8,19 +8,20 @@ class EllipseEl extends Drawable {
   }
 
   select(s) {
-    this.isSelected = this.isSelected || s;
+    this.isSelected = s;
   }
 
   drawEl() {
-    let col = color(255);
+    const b = this.zIndex + 0.2
+    let col = color(255 * b);
 
     if (this.isTransparent && !this.isSelected) {
-      col = color(220, 255, 220)
+      col = color(220 * b, 255 * b, 220 * b)
       col.setAlpha(120);
     }
 
     if (this.isPreselected) {
-      col.setRed(0);
+      col = color('pink')
     }
 
     if (this.isSelected) {

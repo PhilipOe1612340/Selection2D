@@ -9,6 +9,7 @@ class Drawable {
   isSelected = false;
   isTransparent = false;
   isPreselected = false;
+  isHidden = false;
 
   constructor(z, anchor) {
     this.zIndex = z;
@@ -20,6 +21,9 @@ class Drawable {
   }
 
   draw() {
+    if (this.isHidden) {
+      return;
+    }
     this.drawEl();
   }
 }
