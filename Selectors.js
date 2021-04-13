@@ -121,15 +121,21 @@ class HidingSelector extends Selector {
 
         collection.forEach(d => {
             d.isHidden = false;
-            if (mode) {
-                if (this.unSelectMode && d.isSelected) {
-                    d.select(!this.shouldSelect(d));
-                }
-                if (!this.unSelectMode && !d.isSelected) {
-                    d.select(this.shouldSelect(d));
-                }
-            }
+        });
 
+        collection.map((d) => {
+            let shouldChange = false;
+            if (mode && this.unSelectMode === d.isSelected) {
+                shouldChange = this.shouldSelect(d);
+            }
+            return { d, shouldChange };
+        })
+            .sort((d1, d2) => d2.d.zIndex - d1.d.zIndex)
+            .filter(({ shouldChange }) => shouldChange)
+            .slice(0, 1).forEach(({ d }) => d.select(!d.isSelected))
+
+
+        collection.forEach(d => {
             d.isHidden = d.isSelected !== this.unSelectMode;
         });
     }
