@@ -21,9 +21,6 @@ class Drawable {
   }
 
   draw() {
-    if (this.isHidden) {
-      return;
-    }
     this.drawEl();
   }
 }

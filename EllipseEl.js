@@ -28,7 +28,13 @@ class EllipseEl extends Drawable {
       col = color('green')
     }
 
+    if (this.isHidden) {
+      col.setAlpha(10);
+      noStroke();
+    }
+
     fill(col);
     ellipse(this.anchor.x, this.anchor.y, this.width, this.height);
+    stroke(0)
   }
 }
