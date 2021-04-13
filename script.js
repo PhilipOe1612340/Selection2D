@@ -14,7 +14,7 @@ async function setup() {
 
   const ma = 200;
   for (let index = 0; index < 100; index++) {
-    drawable.push(new EllipseEl(drawable.length, { x: ~~random(ma, width - ma), y: ~~random(ma, height - ma) }))
+    drawable.push(new EllipseEl(drawable.length, { x: ~~random(ma, width - ma), y: ~~random(ma, height - ma) }, ~~random(40, 80)))
   }
   textSize(32);
 }

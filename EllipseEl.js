@@ -1,6 +1,10 @@
 class EllipseEl extends Drawable {
-  constructor(z, anchor) {
+  constructor(z, anchor, size) {
     super(z, anchor);
+    if (size) {
+      this.width = size;
+      this.height = size;
+    }
   }
 
   select(s) {
