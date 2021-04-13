@@ -3,7 +3,7 @@ let selectMode = false;
 let pos = { x: 0, y: 0 };
 
 const selectors = [new BubbleSelector(), new RaySelector(), new HidingSelector()];
-let selectorNr = 2;
+let selectorNr = 0;
 let selector = selectors[selectorNr];
 
 
