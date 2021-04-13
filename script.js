@@ -1,23 +1,28 @@
 const drawable = [];
 let selectMode = false;
 let pos = { x: 0, y: 0 };
-const selector = new BubbleSelector();
+
+const selectors = [new BubbleSelector(), new RaySelector()];
+let selectorNr = 0;
+let selector = selectors[selectorNr];
+
 
 async function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
   rectMode(CENTER);
-  fill(255);
   stroke(0);
-  strokeWeight(3);
 
   const ma = 200;
   for (let index = 0; index < 100; index++) {
     drawable.push(new EllipseEl(drawable.length, { x: ~~random(ma, width - ma), y: ~~random(ma, height - ma) }))
   }
+  textSize(32);
 }
 
 function draw() {
   background(255);
+
+  drawText();
 
   selector.moveCursor(pos);
   drawable.forEach(d => d.isTransparent = selector.isClose(d, pos));
@@ -28,6 +33,16 @@ function draw() {
 
   drawable.forEach((d) => d.draw());
   selector.drawCursor();
+}
+
+function drawText() {
+  fill(0);
+  strokeWeight(1);
+
+  text('press "space" to switch selection types', 200, 50);
+
+  fill(255);
+  strokeWeight(3);
 }
 
 function mouseClicked(_event) {
@@ -49,8 +64,17 @@ function mouseReleased() {
   selectMode = false;
 }
 
-
 function mouseWheel(event) {
   selector.modify(event.deltaY);
 }
 
+function keyTyped() {
+  if (key === ' ') {
+    selectorNr = (selectorNr + 1) % selectors.length;
+    selector = selectors[selectorNr];
+    drawable.forEach(d => d.isPreselected = d.isSelected = false);
+
+  }
+
+  return false;
+}
