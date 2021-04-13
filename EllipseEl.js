@@ -12,7 +12,11 @@ class EllipseEl extends Drawable {
 
     if (this.isTransparent && !this.isSelected) {
       col = color(220, 255, 220)
-      col.setAlpha(128);
+      col.setAlpha(120);
+    }
+
+    if (this.isPreselected) {
+      col.setRed(0);
     }
 
     if (this.isSelected) {

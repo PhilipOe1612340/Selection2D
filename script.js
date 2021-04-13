@@ -1,13 +1,11 @@
 const drawable = [];
 let selectMode = false;
 let pos = { x: 0, y: 0 };
-const selected = [];
-range = 100;
-const selector = new BubbleSelector(range);
+const selector = new BubbleSelector();
 
 async function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
-
+  rectMode(CENTER);
   fill(255);
   stroke(0);
   strokeWeight(3);
@@ -20,12 +18,10 @@ async function setup() {
 
 function draw() {
   background(255);
-  
+
   selector.moveCursor(pos);
   drawable.forEach(d => d.isTransparent = selector.isClose(d, pos));
-  if (selectMode) {
-    drawable.forEach(d => d.select(selector.shouldSelect(d, pos)));
-  }
+  selector.select(drawable, selectMode);
   if (selectMode === 'click') {
     selectMode = false;
   }
@@ -52,3 +48,9 @@ function mouseMoved() {
 function mouseReleased() {
   selectMode = false;
 }
+
+
+function mouseWheel(event) {
+  selector.modify(event.deltaY);
+}
+

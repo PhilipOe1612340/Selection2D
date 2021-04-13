@@ -8,6 +8,7 @@ class Drawable {
   height = 50;
   isSelected = false;
   isTransparent = false;
+  isPreselected = false;
 
   constructor(z, anchor) {
     this.zIndex = z;
