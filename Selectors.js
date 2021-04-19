@@ -32,13 +32,44 @@ class Selector {
 class BubbleSelector extends Selector {
 
     constructor() {
-        super('Bubble Selector',100);
+        super('Bubble Selector', 100);
         this.cursor = new BubbleCursor(this.range);
     }
 
     select(collection, mode) {
-        if (!mode) { return }
-        collection.forEach(d => d.select(d.isSelected || this.shouldSelect(d)));
+        collection.forEach(d => d.isPreselected = false);
+
+        // find closest
+        let closest;
+        let minDist = Infinity;
+        for (const d of collection) {
+            const ignore = d.isSelected || !d.isTransparent;
+
+            if (ignore) {
+                continue;
+            }
+
+            const distance = this.distance(d.anchor, this.pos);
+            console.log(distance)
+            if (distance < minDist) {
+                minDist = distance;
+                closest = d;
+            }
+        }
+
+        if (!closest) {
+            return;
+        }
+
+        // preview selection
+        if (!mode) {
+            closest.isPreselected = true;
+            return;
+        }
+
+        // select
+        closest.select(true);
+        closest.isPreselected = false;
     }
 
     shouldSelect(d) {
@@ -51,6 +82,10 @@ class BubbleSelector extends Selector {
 
     inside(x, y, range) {
         return Math.abs(x - y) < range;
+    }
+
+    distance(p1, p2) {
+        return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
     }
 
     modify(byN) {
