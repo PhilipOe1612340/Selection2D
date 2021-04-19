@@ -21,7 +21,8 @@ class EllipseEl extends Drawable {
     }
 
     if (this.isPreselected) {
-      col = color('pink')
+      col = color('pink');
+      col.setAlpha(230);
     }
 
     if (this.isSelected) {

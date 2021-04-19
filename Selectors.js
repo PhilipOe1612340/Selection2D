@@ -15,6 +15,10 @@ class Selector {
         return false;
     }
 
+    distance(p1, p2) {
+        return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+    }
+
     moveCursor(pos) {
         this.cursor.anchor = pos;
         this.pos = pos;
@@ -50,7 +54,6 @@ class BubbleSelector extends Selector {
             }
 
             const distance = this.distance(d.anchor, this.pos);
-            console.log(distance)
             if (distance < minDist) {
                 minDist = distance;
                 closest = d;
@@ -72,20 +75,8 @@ class BubbleSelector extends Selector {
         closest.isPreselected = false;
     }
 
-    shouldSelect(d) {
-        return this.inside(d.anchor.x, this.pos.x, (this.range - d.width) / 2) && this.inside(d.anchor.y, this.pos.y, (this.range - d.height) / 2)
-    }
-
     isClose(d) {
-        return this.inside(d.anchor.x, this.pos.x, this.range) && this.inside(d.anchor.y, this.pos.y, this.range)
-    }
-
-    inside(x, y, range) {
-        return Math.abs(x - y) < range;
-    }
-
-    distance(p1, p2) {
-        return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+        return this.distance(d.anchor, this.pos) < this.range + d.width / 2
     }
 
     modify(byN) {
